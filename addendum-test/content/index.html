@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>SUI Test</title>
+
+    <script language="JavaScript" src="/lib/sui.js"></script>
+    <script language="JavaScript" src="/lib/pmjq.js"></script>
+    <script language="JavaScript" src="/lib/ejs.js"></script>
+    
+    <script language="JavaScript">
+    
+        Sui.ready(function(){
+            
+            var store = new Sui.data.Store({
+                endpoint: '/db/TestSchema',
+                autoLoad: true 
+            });
+            
+            var viewManager = new Sui.view.Manager({
+                views: [
+                    new Sui.view.Component({
+                        name: 'SomeControls',
+                        template: '/templates/buttons.ejs',
+                        renderTo: 'buttonPanel',
+                        listeners: {
+                            reloadButton: {
+                                element: '#reloadBtn',
+                                event: 'click',
+                                invoke: function(index, cmp) {
+                                    cmp.manager.get('TestList').dataStore.read();
+                                }
+                            },
+                            searchField: {
+                                element: '#searchField',
+                                event: 'keyup',
+                                invoke: function(index, cmp){
+                                    cmp.manager.get('TestList').dataStore.find({
+                                        field1: $('#searchField').value
+                                    });
+                                }
+                            }
+                        }
+                    }),
+                    new Sui.view.Component({
+                        name: 'TestList',
+                        renderTo: 'listPanel',
+                        template: '/templates/list.ejs',
+                        dataStore: store
+                    })
+                ]
+            });
+            
+            viewManager.build();
+  
+        });
+        
+    </script>
+  </head>
+  <body>
+    <h3>the list</h3>
+    <div id="buttonPanel"></div>
+    <div id="listPanel"></div>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "author": "Patrick Balsiger <patrick.balsiger@allternative.ch> (https://bitbucket.org/MentalExtract)",
+  "dependencies": {
+    "mime": "1.2.7",
+    "wayjs" :"0.4.0"
+  },
+  "keywords": [
+    "web",
+    "rest",
+    "mongodb",
+    "framework"
+  ],
+  "main": "index.js",
+  "name": "slimple",
+  "version": "0.6.0",
+  "repository": {
+    "url": "https://bitbucket.org/MentalExtract/slimple",
+    "type": "git"
+  },
+  "description": "slim and simple service oriented nodejs framework",
+  "devDependencies": {},
+  "scripts": {
+    "test": "test.js"
+  },
+  "license": "BSD",
+  "_from": "slimple"
+}

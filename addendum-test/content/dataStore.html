@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>SUI Test</title>
+
+    <script language="JavaScript" src="/lib/sui.js"></script>
+    <script language="JavaScript" src="/lib/pmjq.js"></script>
+    
+    <script language="JavaScript">
+    
+        Sui.ready(function(){
+            
+            var dataStore = new Sui.data.Store({
+                endpoint: '/db/TestSchema'
+            });
+
+            dataStore.read(function(response, status){
+                $('#read').html(JSON.stringify(response));
+            });
+            
+            
+            dataStore.readById(
+                '51c46dc2e0011ca352000001',
+                function(response){
+                    $('#readById').html(JSON.stringify(response));
+                });
+            
+            dataStore.create({
+                field1: 'create '+new Date()
+            }, function(response){
+                
+                if(response){
+                   $('#create').html(JSON.stringify(response));
+                    dataStore.delete({
+                        id: response.id,
+                    }, function(response){
+                        $('#delete').html(JSON.stringify(response));
+                    });
+                }
+                
+            });
+            
+            dataStore.update({
+                id: '51c46dc2e0011ca352000001',
+                field1: 'hello '+new Date(),
+                comments: [
+                    { text: 'first'},
+                    { text: 'second'}
+                ]
+            }, function(response){
+               $('#update').html(JSON.stringify(response));
+            });
+            
+            dataStore.find({
+                field1: 'hello'
+            },function(response){
+               $('#find').html(JSON.stringify(response));
+            });
+            
+        });
+        
+    </script>
+  </head>
+  <body>
+    <h3>read</h3>
+    <div id="read"></div>
+    
+    <h3>read by id</h3>
+    <div id="readById"></div>
+    
+    <h3>update</h3>
+    <div id="update"></div>
+    
+    <h3>create</h3>
+    <div id="create"></div>
+    
+    <h3>delete</h3>
+    <div id="delete"></div>
+    
+    <h3>find</h3>
+    <div id="find"></div>
+    
+  </body>
+</html>
