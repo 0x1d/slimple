@@ -32,6 +32,8 @@ $ npm install mongoose
 * set property "active" to true  
 * set the connectionString to your db
 
+Caution: at the moment, only mongoose 3.5.8 is supported
+
 ### Run the app  
 You don't have to worry about the apps.js at the moment.  
 If you're familiar with JS you know what you can do with it.  
