@@ -40,15 +40,19 @@ module.exports = {
         };
         
         // bind db stuff if active
-        if(appConfig.db.active){
+        if(appConfig.db && appConfig.db.active){
             var mongo = require('../db/mongo');
             mongo.initialize(context);
             context.db = mongo;
             bindSchemas(context);
         }
         // bind  events, services and schema to context
-        bindEvents(context);
-        bindServices(context);
+        if(appConfig.eventPath){
+            bindEvents(context);
+        }
+        if(appConfig.servicePath){
+            bindServices(context);
+        }
         
         
         // extend the context if it is set

@@ -6,7 +6,7 @@ exports.bindEvents = bindEvents;
  * Load all modules in a given path recursively.
  */
 function bindEvents(ctx) {
-    var path = process.cwd()+ctx.config.eventLocation;
+    var path = process.cwd()+ctx.config.eventPath;
     walker.exec(path,function(file){
         var event = require(file);
         ctx.log.info('bind event: ' + event.name);

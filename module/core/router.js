@@ -20,9 +20,9 @@ exports.route = function(ctx, session, request, response) {
             });
         } else { // service not found, serve content
             if (pathname === '/') { // no page requested, try to show index.html
-                ctx.web.content.stream(ctx.config.contentLocation + "/index.html", response);
+                ctx.web.content.stream(ctx.config.contentPath + "/index.html", response);
             } else {
-                ctx.web.content.stream(ctx.config.contentLocation + "/" + pathname, response);
+                ctx.web.content.stream(ctx.config.contentPath + "/" + pathname, response);
             }
         }
     } catch(error) {

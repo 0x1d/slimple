@@ -8,7 +8,7 @@ exports.schemaHolder = schemaHolder;
  * Load all schemas in a given path recursively.
  */
 function loadSchema(ctx) {
-    var path = process.cwd()+ctx.config.schemaLocation;
+    var path = process.cwd()+ctx.config.schemaPath;
     walker.exec(path, function(file){
         var descriptor = require(file);
         var schemaName = descriptor.name;

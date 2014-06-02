@@ -9,7 +9,7 @@ exports.serviceHolder = serviceHolder;
  */
 function loadServices(ctx) {
     
-    var path =  process.cwd() + ctx.config.serviceLocation;
+    var path =  process.cwd() + ctx.config.servicePath;
     
     var parents = [];
     walker.exec(path, function(file, parent){

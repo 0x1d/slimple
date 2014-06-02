@@ -11,5 +11,4 @@ var app = {
         slimple.run(config, this.context);
     }
 };
-
 app.run();
