@@ -6,7 +6,7 @@ module.exports = {
     init: function(ctx, http){
         var data = http.data;
         this.id = data.id;
-        this.inputData = data.payload ? JSON.parse(data.payload) : null;
+        this.inputData = data.data ? JSON.parse(data.data) : null;
         this.query = this.inputData !== null && this.inputData.query ? JSON.parse(this.inputData.query) : null;
         this.schema = data.schema;
         this.schemaDefinition = ctx.db.getSchema(this.schema);
@@ -37,7 +37,7 @@ module.exports = {
     POST: function(ctx, http){
         var service = this;
         service.init(ctx, http);
-        var preparedData = mapData(service.schemaDefinition, service.inputData, {});
+        var preparedData = ctx.util.json.mapData(service.inputData, {});
         var dbObject = new service.model(preparedData);
         dbObject.save(function(error) {
             http.reply(error ? {msg:error} : { id : dbObject._id });
@@ -51,7 +51,7 @@ module.exports = {
             service.model.findOne({
                 _id: service.id
             }, function(err, doc) {
-                var upd = mapData(service.schemaDefinition, service.inputData, doc);
+                var upd = ctx.util.json.mapData(service.inputData, doc);
                 upd.save(function(error) {
                     http.reply(error ? { msg : error } : {});
                 });
@@ -75,22 +75,4 @@ module.exports = {
         }
     }
 
-};
-
-var mapData = function(schema, from, to) {
-    delete from._id;
-    delete from.schema;
-    for (var key in from) {
-        if (from[key] !== null && from[key] !== 'undefined') {
-            /*if(schema[key].encrypted){ // TODO map of additional properties
-                if(!to[key]){ // encrypt only if field didn't containi any data yet (insert)
-                    var md5 = crypto.createHash('md5').update(from[key]).digest("hex");
-                    to[key] = md5;
-                }
-            } else {*/
-                to[key] = from[key];
-            //}
-        }
-    }
-    return to;
 };

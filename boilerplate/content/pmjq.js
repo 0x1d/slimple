@@ -65,19 +65,19 @@ var $ = function(selector){
             return $(found);
         }
         return;
-    };
+    }
     
     // get parent of the current element
     element.parent = function(){
         if(this.parentElement){
             return $(this.parentElement);
         }
-    };
+    }
 
     // indicates that this element is a $ function
     element.is$ = function(){
         return true;
-    };
+    }
 
     return element;
 };

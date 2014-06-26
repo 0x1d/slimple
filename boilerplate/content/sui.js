@@ -72,9 +72,12 @@ var Sui = {
          *
          */
         ajax: function(config, callback){
-
+            var noData = false;
+            if(config.data === null){
+                noData = true;
+            }
             var serializedData = Sui.util.serialize(config.data);
-            var endPointUrl = config.method === 'GET' || config.method === 'DELETE' ? config.endpoint+'?'+serializedData : config.endpoint;
+            var endPointUrl = (config.method === 'GET' || config.method === 'DELETE') && noData !== true ? config.endpoint+'?'+serializedData : config.endpoint;
             var postData = config.method === 'POST' || config.method === 'PUT' ? serializedData : null;
 
             var http = new XMLHttpRequest();
@@ -125,6 +128,7 @@ var Sui = {
             this.manager = {};
             this.data = config.staticData ? config.staticData : { data : {} };
             this.functions = config.functions ? config.functions : {};
+            this.type = config.type ? config.type : '';
             
             // private vars
             var that = this;
@@ -139,25 +143,31 @@ var Sui = {
                 });
             }
 
-            if(that.dataStore){
-                that.dataStore.addListener(this);
-                if(that.dataStore.autoLoad){
-                    that.dataStore.read();
+            this.setDataStore = function(ds,cb){
+                if(ds){
+                    that.dataStore = ds;
+                    that.dataStore.addListener(this);
+                    if(that.dataStore.autoLoad === true){
+                        that.dataStore.read();
+                    }
+                    if(cb){
+                        cb(that);
+                    }
                 }
-            }
+            };
             
             // public methods
             this.build = function(manager){
                 that.manager = manager;
-                that.addListeners(listeners);
+                //that.addListeners(listeners);
             };
 
             this.render = function(newData){
                 if(newData){
                     that.data = newData;
                 }
-              template.update(renderTo, that.data); 
-              that.addListeners(listeners);
+                template.update(renderTo, that.data); 
+                that.addListeners(listeners);
             };
                         
             this.addListeners = function(listeners){
@@ -168,8 +178,8 @@ var Sui = {
                         elements.item(i).addEventListener(currentListener.event,(function(eventListener, cmp) {
                             return function(event){
                                 event.preventDefault();
-                                var index = event.target.getAttribute("index");
-                                eventListener.invoke(index, cmp);
+                                //var index = event.target.getAttribute("index");
+                                eventListener.invoke(event, cmp);
                             };
                         })(currentListener, that));
                         
@@ -179,30 +189,31 @@ var Sui = {
             
             var dataEvents = {
                 read: function(action){
-                    that.data = { data: that.dataStore.data };
-                    that.render();
+                    if(that.type === 'list'){
+                        that.render(that.dataStore.data);
+                    }
                 },
                 readById: function(action){
-                    that.data = { data: that.dataStore.selectedData };
-                    that.render();
+                    if(that.type !== 'list'){
+                        that.render(that.dataStore.currentRecord);
+                    }
                 },
                 find: function(action){
-                    that.data = { data: that.dataStore.selectedData };
-                    that.render();
+                    that.render(that.dataStore.selectedData);
                 },
                 create: function(action){
                     that.dataStore.read(function(response, status){
-                        that.render({ data : response });
+                        that.render(response);
                     });
                 },
                 update: function(action){
                     that.dataStore.read(function(response, status){
-                        that.render({ data : response });
+                        that.render(response);
                     });
                 },
                 delete: function(action){
                     that.dataStore.read(function(response, status){
-                        that.render({ data : response });
+                        that.render(response);
                     });
                 }
             };
@@ -214,7 +225,12 @@ var Sui = {
             if(config.init){
                 config.init(this);
             }
-            that.render();            
+            that.setDataStore(that.dataStore, function(){
+                if(that.dataStore.autoLoad === true){
+                    that.dataStore.read();
+                }
+            });
+
         }
         
         
@@ -254,7 +270,7 @@ var Sui = {
                     service: that.service+'/'+id
                 }, function(response, status){
                     that.currentRecord = response;
-                    notifyListeners("readById");
+                    notifyListeners('readById');
                     if(callback){
                         callback(response, status);
                     }
@@ -323,9 +339,9 @@ var Sui = {
                     endpoint: config.service ? config.service : this.service,
                     async: true,
                     data: config.data ? {
-                        payload: config.data,
+                        data: config.data,
                         timestamp: Date.now()
-                    } : {}
+                    } : null
                 }, function(data, status){
                     callback(data, status);
                 });

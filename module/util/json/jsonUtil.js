@@ -1,7 +1,5 @@
 module.exports = {
     mapData: function(from, to) {
-        //delete from._id;
-        //delete from.schema;
         for (var key in from) {
             if (from[key] !== null && from[key] !== 'undefined') {
                 to[key] = from[key];
