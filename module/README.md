@@ -1,23 +1,13 @@
 Slimple NodeJS Framework 
 ========================
-A slim and simple nodejs framework.  
+A slim and simple nodejs framework. 
   
 The idea of Slimple is to make it easy for you to write service oriented nodejs web applications.  
-It is abandonning too much fancy shmancy modules and tries as much as possible to be pure JS.  
-  
+It is abandonning too much fancy shmancy modules and tries as much as possible to be pure JS.   
 At the first look, it might not be as simple as express for instance.  
 But it provides you a coherent environment for writing apps.  
 Its core focus lies on a service oriented architecture and MongoDB support.  
 Everything you create will be loaded automatically to the Slimple application context (if you follow the convention). 
-  
-The official [website](http://slimple.eu01.aws.af.cm/) is still work in progress and not fully up-to-date.  
-If the message "In progres" appears, just hit refresh.
-
-
-> Caution: There are breaking changes in version 0.5.0.  
-> The resource path to your services can now be defined with the folder structure.  
-> For example the resource /echo/:text will now be a folder /echo with the service in it. The resource defined in the service will be just :text  
-> Slimple automatically adds the folder structure to the resource path.
 
 ## Installation
 ```
@@ -27,9 +17,12 @@ As it doesn't come with convenient building tools, following step has to be done
   
 ```
 copy the content of  
-/node_modules/slimple/examples/skeleton   
+https://github.com/0x1d/slimple/tree/master/skeleton   
 to your project root folder
 ```
+  
+### Config  
+Change the path in the file config/app.js  
 
 ### Mongoose Support  
 If you want to add mongoose support to your project, perform following steps:  
@@ -40,6 +33,8 @@ $ npm install mongoose
 * open /config/db.js  
 * set property "active" to true  
 * set the connectionString to your db
+
+Caution: at the moment, only mongoose 3.5.8 is supported
 
 ### Run the app  
 You don't have to worry about the apps.js at the moment.  
@@ -63,27 +58,26 @@ By default, the services are located in the /services folder.
 By adding subfolders, you create the path to your REST service:
 
 ```
-$ mkdir /services/echo  
+$ mkdir /services/test  
 ```
 
 Now create a file (the name doesn't matter) and add the basic service structure:
 ```
 module.exports = {
-    resource: '(/:what)',
-    GET: function(ctx, data, http){
-        http.reply(data.what);
+    resource: '/echo(/:what)',
+    GET: function(ctx, http){
+        http.reply(http.data.what);
     }
 };
 ```  
 This service will be available through this URL:
-/echo  
+/test/echo  
 You can nest folders as much as you like, but keep in mind that each folder will be added to the resource path.  
 You also create other methods like POST, DELETE or PUT.  
 As you can see, the service method(s) need following parameters: 
 
 * ctx - the application context where events and schemas are available  
-* data - the data passed to this service from the client  
-* http - request and response wrapper  
+* http - request, response and data wrapper  
 
 
 http.reply is a convenient method to send back data to the client. It will be stringified automatically if it is a JSON object.
@@ -94,7 +88,7 @@ For further informations about what URL patterns are possible, have a look at th
 #### Error handling
 If you like to return some http errors, just throw an error object in your service:  
 ```
-throw { status: 500, message : new Error("that sucks")};
+throw { status: 500, message : new Error("that sucks").stack};
 ```
 #### Session handling
 Accessing session attributes within a service is quite simple:  

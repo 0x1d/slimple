@@ -17,9 +17,12 @@ As it doesn't come with convenient building tools, following step has to be done
   
 ```
 copy the content of  
-/node_modules/slimple/examples/skeleton   
+https://github.com/0x1d/slimple/tree/master/skeleton   
 to your project root folder
 ```
+  
+### Config  
+Change the path in the file config/app.js  
 
 ### Mongoose Support  
 If you want to add mongoose support to your project, perform following steps:  

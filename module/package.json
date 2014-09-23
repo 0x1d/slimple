@@ -12,9 +12,9 @@
   ],
   "main": "index.js",
   "name": "slimple",
-  "version": "0.6.0",
+  "version": "0.6.2",
   "repository": {
-    "url": "https://bitbucket.org/MentalExtract/slimple",
+    "url": "https://github.com/0x1d/slimple",
     "type": "git"
   },
   "description": "slim and simple service oriented nodejs framework",
