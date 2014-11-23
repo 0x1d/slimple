@@ -7,7 +7,7 @@ module.exports = {
   
   name: 'slimple.echo',
   invoke: function(ctx, data){
-      ctx.log.trace("slimple.echo: " + data);
+      ctx.log.trace("slimple.echo > " + data);
   }
     
 };

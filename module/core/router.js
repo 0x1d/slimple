@@ -19,10 +19,14 @@ exports.route = function(ctx, session, request, response) {
                 match.actions[0].invoke(ctx, serviceData, session, request, response );
             });
         } else { // service not found, serve content
-            if (pathname === '/') { // no page requested, try to show index.html
-                ctx.web.content.stream(ctx.config.contentPath + "/index.html", response);
+            if(ctx.config.contentPath){
+                if (pathname === '/') { // no page requested, try to show index.html
+                    ctx.web.content.stream(ctx.config.contentPath + "/index.html", response);
+                } else {
+                    ctx.web.content.stream(ctx.config.contentPath + "/" + pathname, response);
+                }
             } else {
-                ctx.web.content.stream(ctx.config.contentPath + "/" + pathname, response);
+                statusResponse.notFound('no content path defined', response);
             }
         }
     } catch(error) {

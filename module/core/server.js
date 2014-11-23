@@ -14,7 +14,7 @@ exports.httpd = {
         
         // handle uncaught exceptions
         process.on('uncaughtException', function(error){
-            ctx.log.error('Uncaught ' + error);
+            ctx.log.error('UncaughtException' + error.stack);
         });
         
         // create the HTTP server on the shared port
