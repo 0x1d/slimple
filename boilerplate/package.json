@@ -2,7 +2,7 @@
     "name":"boilerplate",
     "version":"0.6.0",
     "dependencies":{
-        "slimple": "0.6.0",
+        "slimple": "0.6.3",
         "mongoose": "3.5.8"
     }
 }

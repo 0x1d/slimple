@@ -12,7 +12,7 @@
   ],
   "main": "index.js",
   "name": "slimple",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "repository": {
     "url": "https://github.com/0x1d/slimple",
     "type": "git"

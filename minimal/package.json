@@ -1,6 +1,6 @@
 {
-    "name":"skeleton",
-    "version":"0.6.0",
+    "name":"minimal",
+    "version":"0.0.1",
     "dependencies":{
         "slimple": "0.6.3"
     }
