@@ -3,11 +3,6 @@ Slimple NodeJS Framework
 A slim and simple nodejs framework. 
   
 The idea of Slimple is to make it easy for you to write service oriented nodejs web applications.  
-It is abandonning too much fancy shmancy modules and tries as much as possible to be pure JS.   
-At the first look, it might not be as simple as express for instance.  
-But it provides you a coherent environment for writing apps.  
-Its core focus lies on a service oriented architecture and MongoDB support.  
-Everything you create will be loaded automatically to the Slimple application context (if you follow the convention). 
 
 ## Installation
 ```
